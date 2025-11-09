@@ -38,16 +38,12 @@ export default function ChatBot() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: content }),
       });
+
+      // Always display the response body exactly as returned
       let reply = '...the wind carries back only silence.';
-      if (res.ok) {
-        const data = await res.json().catch(() => null);
-        if (data && (data.reply || data.message || data.text)) {
-          reply = data.reply || data.message || data.text;
-        } else {
-          const text = await res.text();
-          if (text) reply = text;
-        }
-      }
+      const text = await res.text();
+      if (text && text.length > 0) reply = text;
+
       await wait(400);
       setMessages((m) => [...m, { role: 'bot', text: reply }]);
     } catch (e) {
