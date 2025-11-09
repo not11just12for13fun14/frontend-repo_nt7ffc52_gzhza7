@@ -1,26 +1,42 @@
-import { useState } from 'react'
+import { useRef } from 'react'
+import { motion } from 'framer-motion'
+import Hero from './components/Hero'
+import ChatBot from './components/ChatBot'
+import ScrollUnroll from './components/ScrollUnroll'
+import ParallaxScroll from './components/ParallaxScroll'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const chatRef = useRef(null)
+
+  const handleSummon = () => {
+    const el = document.getElementById('chat')
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+    <div className="min-h-screen w-full bg-[#fffaf0] text-black">
+      <ParallaxScroll />
+
+      {/* Scroll unrolling container */}
+      <ScrollUnroll>
+        <Hero onSummon={handleSummon} />
+
+        {/* Scroll transition hint */}
+        <div className="relative -mt-12 mb-8 flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            whileInView={{ opacity: 0.8, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="rounded-full border-2 border-black/20 bg-[#fffaf0]/70 px-5 py-2 text-sm text-black/70"
           >
-            Count is {count}
-          </button>
+            Gently unroll the scroll
+          </motion.div>
         </div>
-      </div>
+
+        {/* Chatbot demo */}
+        <ChatBot ref={chatRef} />
+      </ScrollUnroll>
     </div>
   )
 }
