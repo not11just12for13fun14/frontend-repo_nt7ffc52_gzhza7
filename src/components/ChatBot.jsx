@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const WEBHOOK_URL = 'http://localhost:5678/webhook-test/freaking';
+// Prefer environment override; fall back to prior default
+const WEBHOOK_URL = import.meta.env.VITE_WEBHOOK_URL || 'http://localhost:5678/webhook-test/freaking';
 
 export default function ChatBot() {
   const [messages, setMessages] = useState([
